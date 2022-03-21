@@ -1,8 +1,7 @@
 package com.example.spring_test.controller;
 
-import com.example.spring_test.bussiness.abstracts.IResellerService;
+import com.example.spring_test.aspects.annotation.SecuredMethod;
 import com.example.spring_test.bussiness.abstracts.IUserService;
-import com.example.spring_test.entity.Reseller;
 import com.example.spring_test.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,18 +22,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/getAll/{page}/")
+    @SecuredMethod(role = "can,a,GetAll")
+    @GetMapping("/getAll/{page}")
     public ResponseEntity<Page<User>> getAll(@PathVariable Integer page, String search){
-        System.out.println("vvvv");
         try{
         return new ResponseEntity<>(userService.getAll(PageRequest.of(Integer.parseInt(page.toString()) - 1, 10)),HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
     }
-//    @AcceptToken(1,2,3,4)
+
     @GetMapping("/getById/{resellerId}")
     public Optional<User> getById(@PathVariable Integer resellerId) {
         return userService.getById(resellerId);

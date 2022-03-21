@@ -42,7 +42,7 @@ public class JWTToken {
     }
 
     // verilen token a ait claims bilgisini alır.
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
